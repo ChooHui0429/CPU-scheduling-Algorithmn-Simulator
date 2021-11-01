@@ -44,33 +44,45 @@ public class NonPreSJF {
                     if(shortestJOB.getBurstTime() > processData.getBurstTime()){
                         shortestJOB = processData;
                     }
+                    else if(shortestJOB.getBurstTime() == processData.getBurstTime()){
+                        if(shortestJOB.getArrivalTime() > processData.getArrivalTime()){
+                            shortestJOB = processData;
+                        }
+                    }
                 }
             }
-            processDatas.remove(shortestJOB);
 
-            ganttCharthead = ganttCharthead + "------|";
-
-            ganttChartContent = ganttChartContent + shortestJOB.getProcessID();
-            for(int i = 0; i < 6 - shortestJOB.getProcessID().length(); i++){
-                ganttChartContent = ganttChartContent + " ";
+            if(shortestJOB.getBurstTime() == 1000000000){
+                time = time + 1;
             }
-            ganttChartContent = ganttChartContent + "|";
+            else{
+                processDatas.remove(shortestJOB);
 
-            ganttChartBottom = ganttChartBottom + "------|";
+                ganttCharthead = ganttCharthead + "------|";
 
-            ganttChartExplain = ganttChartExplain + "Process at time " + time.toString() + " : ";
-            for (int i = 0; i < process.size(); i++){
-                ganttChartExplain = ganttChartExplain + process.get(i).getProcessID() + "(" + process.get(i).getBurstTime() + ") ";
+                ganttChartContent = ganttChartContent + shortestJOB.getProcessID();
+                for(int i = 0; i < 6 - shortestJOB.getProcessID().length(); i++){
+                    ganttChartContent = ganttChartContent + " ";
+                }
+                ganttChartContent = ganttChartContent + "|";
+
+                ganttChartBottom = ganttChartBottom + "------|";
+
+                ganttChartExplain = ganttChartExplain + "Process at time " + time.toString() + " : ";
+                for (int i = 0; i < process.size(); i++){
+                    ganttChartExplain = ganttChartExplain + process.get(i).getProcessID() + "(" + process.get(i).getBurstTime() + ") ";
+                }
+                ganttChartExplain = ganttChartExplain + "\n";
+
+                time = time + shortestJOB.getBurstTime();
+                for(int i = 0; i < 7 - time.toString().length(); i++){
+                    ganttChartTime = ganttChartTime + " ";
+                }
+                ganttChartTime = ganttChartTime + time;
+
+                numProcess = numProcess - 1;
             }
-            ganttChartExplain = ganttChartExplain + "\n";
-
-            time = time + shortestJOB.getBurstTime();
-            for(int i = 0; i < 7 - time.toString().length(); i++){
-                ganttChartTime = ganttChartTime + " ";
-            }
-            ganttChartTime = ganttChartTime + time;
-
-            numProcess = numProcess - 1;
+            
             if (numProcess == 0){
                 done = true;
             }
@@ -94,21 +106,37 @@ public class NonPreSJF {
             shortestJOB.setBurstTime(1000000000);
             for(ProcessData processData : processDatas){
                 if(processData.getArrivalTime() <= time){
-                    process.add(processData.getProcessID());
-                    if(shortestJOB.getBurstTime() > processData.getBurstTime()){
-                        shortestJOB = processData;
+                    process.add(processData.getProcessID());       
+                }
+            }
+            
+            
+            if(process.isEmpty()){
+                time = time + 1;
+            }
+            else{
+                for(ProcessData processData : processDatas){
+                    if(processData.getArrivalTime() <= time){
+                        if(shortestJOB.getBurstTime() > processData.getBurstTime()){
+                            shortestJOB = processData;
+                        }  
+                        else if(shortestJOB.getBurstTime() == processData.getBurstTime()){
+                            if(shortestJOB.getArrivalTime() > processData.getArrivalTime()){
+                                shortestJOB = processData;
+                            }
+                        }     
                     }
                 }
-            }
-            processDatas.remove(shortestJOB);
-            time = time + shortestJOB.getBurstTime();
-            for(ProcessData newprocessData : newProcessDatas){
-                if(newprocessData.getProcessID().equals(shortestJOB.getProcessID())){
-                    newprocessData.setFinishingTime(time);
+                processDatas.remove(shortestJOB);
+                time = time + shortestJOB.getBurstTime();
+                for(ProcessData newprocessData : newProcessDatas){
+                    if(newprocessData.getProcessID().equals(shortestJOB.getProcessID())){
+                        newprocessData.setFinishingTime(time); 
+                    }
                 }
+                numProcess = numProcess - 1;
             }
-
-            numProcess = numProcess - 1;
+            
             if (numProcess == 0){
                 done = true;
             }
