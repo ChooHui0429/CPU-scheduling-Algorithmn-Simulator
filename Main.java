@@ -10,7 +10,7 @@ public class Main{
     public static void mainUI(){
         Boolean validInput = false;
 
-        System.out.println("|----------------------------------------|");
+        System.out.println("------------------------------------------");
         System.out.println("|   CPU SCHEDULING ALGORITHM SIMULATOR   |");
         System.out.println("|----------------------------------------|");
         System.out.println("|       SCHEDULING ALGORITHM TYPE        |");
@@ -21,7 +21,7 @@ public class Main{
         System.out.println("|       5. Non Preemptive Priority       |");
         System.out.println("|                                        |");
         System.out.println("|       0. Exit                          |");
-        System.out.println("|----------------------------------------|");
+        System.out.println("------------------------------------------");
 
         while(!validInput){
             System.out.print("  Selection >> ");
