@@ -48,47 +48,17 @@ public class PreSJF {
                     processAvailables.add(processData);
                 }
             }
-            ArrayList<ProcessData> checkduplicate = new ArrayList<ProcessData>();
-            checkduplicate.addAll(processAvailables);
-            checkduplicate.removeAll(lastProcessAvailables);
 
-            if(!checkduplicate.isEmpty()){
-                ganttChartExplain = ganttChartExplain + "Process at time " + time.toString() + " : ";
-                for (int i = 0; i < processAvailables.size(); i++){
-                    ganttChartExplain = ganttChartExplain + processAvailables.get(i).getProcessID() + "(" + processAvailables.get(i).getBurstTime() + ") ";
-                }
-                ganttChartExplain = ganttChartExplain + "\n";
-                explainControl = true;
+            if(processAvailables.isEmpty()){
+                time = time + 1;
+                lastProcessAvailables.clear();
             }
+            else{
+                ArrayList<ProcessData> checkduplicate = new ArrayList<ProcessData>();
+                checkduplicate.addAll(processAvailables);
+                checkduplicate.removeAll(lastProcessAvailables);
 
-            for(ProcessData processAvailable : processAvailables){
-                if(shortestJob.getBurstTime() == 0){
-                    shortestJob = processAvailable;
-                }
-                else{
-                    if(shortestJob.getBurstTime()>processAvailable.getArrivalTime()){
-                        shortestJob = processAvailable;
-                    }
-                }
-            }
-            
-            if(!shortestJob.getProcessID().equals(lastShortestJob)){
-                ganttCharthead = ganttCharthead + "------|";
-
-                ganttChartContent = ganttChartContent + shortestJob.getProcessID();
-                for(int i = 0; i < 6 - shortestJob.getProcessID().length(); i++){
-                    ganttChartContent = ganttChartContent + " ";
-                }
-                ganttChartContent = ganttChartContent + "|";
-
-                ganttChartBottom = ganttChartBottom + "------|";
-
-                ganttChartTime = ganttChartTime + time;
-                for(int i = 0; i < 7 - time.toString().length(); i++){
-                    ganttChartTime = ganttChartTime + " ";
-                }
-
-                if(!explainControl){
+                if(!checkduplicate.isEmpty()){
                     ganttChartExplain = ganttChartExplain + "Process at time " + time.toString() + " : ";
                     for (int i = 0; i < processAvailables.size(); i++){
                         ganttChartExplain = ganttChartExplain + processAvailables.get(i).getProcessID() + "(" + processAvailables.get(i).getBurstTime() + ") ";
@@ -96,27 +66,63 @@ public class PreSJF {
                     ganttChartExplain = ganttChartExplain + "\n";
                     explainControl = true;
                 }
-                
-            }
+
+                for(ProcessData processAvailable : processAvailables){
+                    if(shortestJob.getBurstTime() == 0){
+                        shortestJob = processAvailable;
+                    }
+                    else{
+                        if(shortestJob.getBurstTime()>processAvailable.getBurstTime()){
+                            shortestJob = processAvailable;
+                        }
+                    }
+                }
             
-            lastShortestJob =  shortestJob.getProcessID();
-            time = time + 1;
-            lastProcessAvailables.clear();
-            lastProcessAvailables.addAll(processAvailables);
+                if(!shortestJob.getProcessID().equals(lastShortestJob)){
+                    ganttCharthead = ganttCharthead + "------|";
 
-            for(ProcessData processData : processDatas){
-                if(processData.getProcessID().equals(shortestJob.getProcessID())){
-                    processData.setBurstTime(processData.getBurstTime()-1);
-                }
-            }
+                    ganttChartContent = ganttChartContent + shortestJob.getProcessID();
+                    for(int i = 0; i < 6 - shortestJob.getProcessID().length(); i++){
+                        ganttChartContent = ganttChartContent + " ";
+                    }
+                    ganttChartContent = ganttChartContent + "|";
 
-            ArrayList<ProcessData> removeData = new ArrayList<ProcessData>();
-            for(ProcessData processData : processDatas){
-                if(processData.getBurstTime() == 0){
-                    removeData.add(processData);
+                    ganttChartBottom = ganttChartBottom + "------|";
+
+                    ganttChartTime = ganttChartTime + time;
+                    for(int i = 0; i < 7 - time.toString().length(); i++){
+                        ganttChartTime = ganttChartTime + " ";
+                    }
+
+                    if(!explainControl){
+                        ganttChartExplain = ganttChartExplain + "Process at time " + time.toString() + " : ";
+                        for (int i = 0; i < processAvailables.size(); i++){
+                            ganttChartExplain = ganttChartExplain + processAvailables.get(i).getProcessID() + "(" + processAvailables.get(i).getBurstTime() + ") ";
+                        }
+                        ganttChartExplain = ganttChartExplain + "\n";
+                        explainControl = true;
+                    }
                 }
-            }
-            processDatas.removeAll(removeData);
+                lastShortestJob =  shortestJob.getProcessID();
+                time = time + 1;
+                lastProcessAvailables.clear();
+                lastProcessAvailables.addAll(processAvailables);
+
+                for(ProcessData processData : processDatas){
+                    if(processData.getProcessID().equals(shortestJob.getProcessID())){
+                        processData.setBurstTime(processData.getBurstTime()-1);
+                    }
+                }
+    
+                ArrayList<ProcessData> removeData = new ArrayList<ProcessData>();
+                for(ProcessData processData : processDatas){
+                    if(processData.getBurstTime() == 0){
+                        removeData.add(processData);
+                    }
+                }
+                processDatas.removeAll(removeData);
+
+            } 
 
             if(processDatas.isEmpty()){
                 done = true;
