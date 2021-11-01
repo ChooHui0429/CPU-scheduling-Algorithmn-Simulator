@@ -15,11 +15,12 @@ public class NonPreSJF {
         String arrivalTime = scanner.nextLine();
         System.out.print("      Burst Time (e.g. 0 1 2 3 4 5) : ");
         String burstTime = scanner.nextLine();
-        String inputExtra = "";
+        System.out.print("        Priority (e.g. 0 1 2 3 4 5) : ");
+        String priority = scanner.nextLine();
 
-        tableGenerate(processID, arrivalTime, burstTime, inputExtra);
+        tableGenerate(processID, arrivalTime, burstTime, priority);
 
-        String ganttChart = ganttChartGenerate(processID, arrivalTime, burstTime, inputExtra);
+        String ganttChart = ganttChartGenerate(processID, arrivalTime, burstTime, priority);
 
         System.out.print(ganttChart);    
     }
@@ -45,8 +46,13 @@ public class NonPreSJF {
                         shortestJOB = processData;
                     }
                     else if(shortestJOB.getBurstTime() == processData.getBurstTime()){
-                        if(shortestJOB.getArrivalTime() > processData.getArrivalTime()){
+                        if(shortestJOB.getPriority()>processData.getPriority()){
                             shortestJOB = processData;
+                        }
+                        else if(shortestJOB.getPriority() == processData.getPriority()){
+                            if(shortestJOB.getArrivalTime()>processData.getArrivalTime()){
+                                shortestJOB = processData;
+                            }
                         }
                     }
                 }
@@ -121,10 +127,15 @@ public class NonPreSJF {
                             shortestJOB = processData;
                         }  
                         else if(shortestJOB.getBurstTime() == processData.getBurstTime()){
-                            if(shortestJOB.getArrivalTime() > processData.getArrivalTime()){
+                            if(shortestJOB.getPriority()>processData.getPriority()){
                                 shortestJOB = processData;
                             }
-                        }     
+                            else if(shortestJOB.getPriority() == processData.getPriority()){
+                                if(shortestJOB.getArrivalTime()>processData.getArrivalTime()){
+                                    shortestJOB = processData;
+                                }
+                            }
+                        }    
                     }
                 }
                 processDatas.remove(shortestJOB);
@@ -156,9 +167,9 @@ public class NonPreSJF {
 
         System.out.println("");
         System.out.println("Non Preemptive Shortest Job First");
-        System.out.println("|------------|--------------|------------|----------------|-----------------|--------------|");
-        System.out.println("| Process ID | Arrival Time | Burst Time | Finishing Time | Turnaround Time | Waiting Time |");
-        System.out.println("|------------|--------------|------------|----------------|-----------------|--------------|");
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+        System.out.println("| Process ID | Arrival Time | Burst Time | Finishing Time | Turnaround Time | Waiting Time | Priority |");
+        System.out.println("|------------|--------------|------------|----------------|-----------------|--------------|----------|");
         for (ProcessData processData : processDatas){
             System.out.print("| ");
             System.out.print(processData.getProcessID());
@@ -195,9 +206,16 @@ public class NonPreSJF {
             for(int i = 0; i < 13-processData.getWaitingTime().toString().length(); i++){
                 System.out.print(" ");
             }
+
+            System.out.print("| ");
+            System.out.print(processData.getPriority());
+            for(int i = 0; i < 9-processData.getPriority().toString().length(); i++){
+                System.out.print(" ");
+            }
+
             System.out.print("|\n");
         }
-        System.out.println("|------------|--------------|------------|----------------|-----------------|--------------|");
+        System.out.println("|---------------------------------------------------------|-----------------|--------------|----------|");
         System.out.print("|                                                 Total : | ");
         Double total_turnarount = 0.00 ;
         Double total_waiting = 0.00 ;
@@ -214,7 +232,7 @@ public class NonPreSJF {
         for(int i = 0; i < 13 - total_waiting.toString().length(); i++){
             System.out.print(" ");
         }
-        System.out.print("|\n");
+        System.out.print("|          |\n");
         System.out.print("|                                               Average : | ");
 
         Double average_turnarount = total_turnarount / processDatas.size();
@@ -232,7 +250,7 @@ public class NonPreSJF {
         for(int i = 0; i < 13 - average_waiting_string.length(); i++){
             System.out.print(" ");
         }
-        System.out.print("|\n");
-        System.out.println("|------------------------------------------------------------------------------------------|\n");
+        System.out.print("|          |\n");
+        System.out.println("-------------------------------------------------------------------------------------------------------\n");
     }
 }
