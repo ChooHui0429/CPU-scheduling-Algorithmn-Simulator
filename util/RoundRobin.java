@@ -42,12 +42,6 @@ public class RoundRobin {
         processes = GeneralFunction.collectInput(processIDsInput, arrivalTimeInput, burstTimesInput, prioritiesInput);
 
         // set default value
-        // TODO: remove?
-        for (ProcessData processData : processes) {
-            processData.setFinishingTime(0);
-            processData.setTurnaroundTime(0);
-            processData.setWaitingTime(0);
-        }
         List<ProcessData> schedulerResult = scheduleProcess(processes);
         setProcessTableData(schedulerResult);
         showGanttChart(schedulerResult);
@@ -169,21 +163,6 @@ public class RoundRobin {
             newProcessesToQueue.add(newProcesses.get(newProcessIndex));
             newProcesses.remove(newProcessIndex);
         }
-        // TODO: remove commented reference (old version)
-        // for (int i = 0; i < processes.size(); i++) {
-        // if (processes.get(i).getArrivalTime() == time) {
-        // int currentPrio = processes.get(i).getPriority();
-        // // to compare priority of arrival, will atleast enter once
-        // if (newProcessPrio == 0 || currentPrio < newProcessPrio) {
-        // newProcessPrio = currentPrio;
-        // newProcessIndex = i;
-        // }
-        // hasNewProcessArrived = true;
-        // }
-        // }
-        // if (hasNewProcessArrived) {
-        // newProcessToQueue.add(1);
-        // }
         return newProcessesToQueue;
     }
 
