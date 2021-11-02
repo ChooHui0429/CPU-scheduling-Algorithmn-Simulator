@@ -231,9 +231,9 @@ public class RoundRobin {
     }
 
     public static void showProcessTable(List<ProcessData> processes) {
-
+        Double totalTurnaroundTime = 0.0;
+        Double totalWaitingTime = 0.0;
         System.out.println("");
-        System.out.println("Round Robin, quantum = " + QUANTUM);
         System.out.println(
                 "-------------------------------------------------------------------------------------------------------");
         System.out.println(
@@ -244,7 +244,15 @@ public class RoundRobin {
             System.out.printf("| %-11s|%13s |%11s |%9s |%15s |%16s |%13s |\n", process.getProcessID(),
                     process.getArrivalTime(), process.getBurstTime(), process.getPriority(), process.getFinishingTime(),
                     process.getTurnaroundTime(), process.getWaitingTime());
+            totalTurnaroundTime += process.getTurnaroundTime();
+            totalWaitingTime += process.getWaitingTime();
         }
+        System.out.println(
+                "|--------------------------------------------------------------------|-----------------|--------------|");
+        System.out.printf("|                                                             Total: |%16.2f |%13.2f |\n",
+                totalTurnaroundTime, totalWaitingTime);
+        System.out.printf("|                                                           Average: |%16.2f |%13.2f |\n",
+                totalTurnaroundTime / processes.size(), totalWaitingTime / processes.size());
         System.out.println(
                 "-------------------------------------------------------------------------------------------------------");
     }
