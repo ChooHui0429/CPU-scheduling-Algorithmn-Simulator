@@ -9,15 +9,9 @@ import dataClass.ProcessData;
 public class RoundRobin {
     private static int QUANTUM = 3;
     private static List<ProcessData> processes;
-    /*
-     * note
-     * 
-     * 3 to 10 processes
-     * 
-     * move all input to main
-     */
 
-    public static void runTerminal() {
+    public static void runTerminal(int quantum) {
+        QUANTUM = quantum;
         Scanner input = new Scanner(System.in);
         int inputCount = 0;
         int processIDCount = 0;

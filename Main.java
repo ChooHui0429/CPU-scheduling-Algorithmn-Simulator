@@ -15,7 +15,7 @@ public class Main {
         System.out.println("|   CPU SCHEDULING ALGORITHM SIMULATOR   |");
         System.out.println("|----------------------------------------|");
         System.out.println("|       SCHEDULING ALGORITHM TYPE        |");
-        System.out.println("|       1. Round Robin (quantum 3)       |");
+        System.out.println("|       1. Round Robin                   |");
         System.out.println("|       2. Preemptive SJF                |");
         System.out.println("|       3. Non Preemptive SJF            |");
         System.out.println("|                                        |");
@@ -30,7 +30,9 @@ public class Main {
                 case 0:
                     System.exit(1);
                 case 1:
-                    RoundRobin.runTerminal();
+                    System.out.println("\nEnter quantum number for Round Robin algorithm (eg: 3) : ");
+                    int quantum = scanner.nextInt();
+                    RoundRobin.runTerminal(quantum);
                     break;
                 case 2:
                     PreSJF.display(scanner);
