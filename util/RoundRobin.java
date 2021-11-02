@@ -67,8 +67,6 @@ public class RoundRobin {
         setProcessTableData(schedulerResult);
         showGanttChart(schedulerResult);
         showProcessTable(processes);
-
-        input.close();
     }
 
     public static List<ProcessData> scheduleProcess(List<ProcessData> processes) {
