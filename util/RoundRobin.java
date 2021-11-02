@@ -206,28 +206,70 @@ public class RoundRobin {
         }
     }
 
-    private static void showGanttChart(List<ProcessData> processes) {
+    private static void showGanttChart(List<ProcessData> result) {
         int totalTime = 0;
-        for (int i = 0; i < processes.size(); i++) {
+        System.out.println("");
+        for (int i = 0; i < result.size(); i++) {
             System.out.print("-------");
         }
         System.out.print("-\n");
-        for (ProcessData processData : processes) {
+        for (ProcessData processData : result) {
             System.out.printf("| %-5s", processData.getProcessID());
         }
         System.out.print("|\n");
-        for (int i = 0; i < processes.size(); i++) {
+        for (int i = 0; i < result.size(); i++) {
             System.out.print("|------");
         }
         System.out.print("|\n");
-        for (ProcessData processData : processes) {
+        for (ProcessData processData : result) {
             // get process end time
             totalTime = processData.getArrivalTime() + processData.getBurstTime();
             System.out.printf("%-7d", processData.getArrivalTime());
         }
         System.out.print(totalTime + "\n");
-        // TODO: add process at time
 
+        // New or remaining process times at process changes
+        System.out.println("");
+        System.out.println("Process times at:");
+        for (int time = 0; time < totalTime; time++) {
+            boolean hasProcessChanged = false;
+            List<String> processChange = new ArrayList<String>();
+
+            // for remaining
+            for (int j = 0; j < result.size(); j++) {
+                if (result.get(j).getArrivalTime() == time && j > 0) {
+                    String currentProcess = "";
+                    int processRemainingTime = 0;
+                    for (int i = 0; i < processes.size(); i++) {
+                        if (result.get(j - 1).getProcessID().equals(processes.get(i).getProcessID())) {
+                            currentProcess = processes.get(i).getProcessID();
+                            processRemainingTime = processes.get(i).getBurstTime();
+                        }
+                    }
+                    for (int i = 0; i < j; i++) {
+                        if (currentProcess.equals(result.get(i).getProcessID())) {
+                            processRemainingTime -= result.get(i).getBurstTime();
+                        }
+                    }
+                    hasProcessChanged = true;
+                    processChange.add(currentProcess + "(" + processRemainingTime + ")");
+                }
+            }
+
+            for (int i = 0; i < processes.size(); i++) {
+                if (processes.get(i).getArrivalTime() == time) {
+                    hasProcessChanged = true;
+                    processChange.add(processes.get(i).getProcessID() + "(" + processes.get(i).getBurstTime() + ")");
+                }
+            }
+
+            if (hasProcessChanged) {
+                System.out.printf("%4d : ", time);
+                for (String string : processChange)
+                    System.out.printf("%8s", string);
+                System.out.println("");
+            }
+        }
     }
 
     public static void showProcessTable(List<ProcessData> processes) {
