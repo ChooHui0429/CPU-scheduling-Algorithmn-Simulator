@@ -26,9 +26,9 @@ public class RoundRobin {
         String burstTimesInput = "";
         String prioritiesInput = "";
 
-        System.out.print("\nRound Robin, quantum = " + QUANTUM + "\n");
+        System.out.print("\nRound Robin, quantum = " + QUANTUM + "\n\n");
         do {
-            System.out.print("\nProcess IDs (e.g. P0 P1 P2 P3 P4 P5): ");
+            System.out.print("Process IDs (e.g. P0 P1 P2 P3 P4 P5) : ");
             processIDsInput = input.nextLine();
             String[] processIDs = processIDsInput.split(" ");
             processIDCount = processIDs.length;
@@ -52,7 +52,7 @@ public class RoundRobin {
                 System.out.println("\nNumber of entrys does not match number of process. Please re-enter\n");
         } while (inputCount != processIDCount);
         do {
-            System.out.print("      Priorities (e.g. 0 1 2 3 4 5) : ");
+            System.out.print("       Priorities (e.g. 0 1 2 3 4 5) : ");
             prioritiesInput = input.nextLine();
             String[] priorities = prioritiesInput.split(" ");
             inputCount = priorities.length;
