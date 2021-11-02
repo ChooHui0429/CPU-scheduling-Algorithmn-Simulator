@@ -169,23 +169,17 @@ public class PreSJF {
                     shortestJob = processAvailable;
                 }
                 else{
-                    if(shortestJob.getBurstTime()>processAvailable.getArrivalTime()){
+                    if(shortestJob.getBurstTime()>processAvailable.getBurstTime()){
                         shortestJob = processAvailable;
                     }
-                    else{
-                        if(shortestJob.getBurstTime()>processAvailable.getBurstTime()){
+                    else if(shortestJob.getBurstTime() == processAvailable.getBurstTime()){
+                        if(shortestJob.getPriority()>processAvailable.getPriority()){
                             shortestJob = processAvailable;
                         }
-                        else if(shortestJob.getBurstTime() == processAvailable.getBurstTime()){
-                            if(shortestJob.getPriority()>processAvailable.getPriority()){
+                        else if(shortestJob.getPriority() == processAvailable.getPriority()){
+                            if(shortestJob.getArrivalTime()>processAvailable.getArrivalTime()){
                                 shortestJob = processAvailable;
                             }
-                            else if(shortestJob.getPriority() == processAvailable.getPriority()){
-                                if(shortestJob.getArrivalTime()>processAvailable.getArrivalTime()){
-                                    shortestJob = processAvailable;
-                                }
-                            }
-                            
                         }
                     }
                 }
