@@ -57,11 +57,12 @@ public class RoundRobin {
     }
 
     public static List<ProcessData> scheduleProcess(List<ProcessData> processes) {
-        // the wait list
-        // TODO: fix burst time being wiped
-        List<ProcessData> processWaitList = new ArrayList<ProcessData>();
-        processWaitList.addAll(processes);
-        // the result
+        // store original burst times
+        List<Integer> remainingBurstTimes = new ArrayList<Integer>();
+        for (ProcessData process : processes) {
+            remainingBurstTimes.add(process.getBurstTime());
+        }
+        // store result
         List<ProcessData> schedulerResult = new ArrayList<ProcessData>();
         // next process by index
         List<Integer> processQueue = new ArrayList<Integer>();
@@ -77,7 +78,7 @@ public class RoundRobin {
         // start of scheduling
         while (isScheduling) {
             // Add processes to queue whenever new processes arrive
-            processQueue.addAll(getArrivedProcessByTime(processWaitList, time));
+            processQueue.addAll(getArrivedProcessByTime(processes, time));
 
             // Adds running process with remaining burst time back to queue only after the
             // process is finished, and after new arrivals
@@ -97,7 +98,7 @@ public class RoundRobin {
              * triggers when CPU is requesting for next process
              */
             if (isRequesting) {
-                pData = processWaitList.get(processQueue.get(queueCounter));
+                pData = processes.get(processQueue.get(queueCounter));
                 ProcessData newProcess = new ProcessData();
                 String pID = pData.getProcessID();
                 int pBurst = pData.getBurstTime();
@@ -121,11 +122,15 @@ public class RoundRobin {
 
             // check if there are process still waiting
             isScheduling = false;
-            for (ProcessData wp : processWaitList) {
+            for (ProcessData wp : processes) {
                 if (wp.getBurstTime() != 0)
                     isScheduling = true;
             }
             time++;
+        }
+        // reapply original burst time after process is finished
+        for (int i = 0; i < processes.size(); i++) {
+            processes.get(i).setBurstTime(remainingBurstTimes.get(i));
         }
 
         return schedulerResult;
