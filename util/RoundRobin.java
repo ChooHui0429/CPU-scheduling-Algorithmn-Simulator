@@ -19,25 +19,46 @@ public class RoundRobin {
 
     public static void runTerminal() {
         Scanner input = new Scanner(System.in);
-        int noOfProcesses = 0;
+        int inputCount = 0;
+        int processIDCount = 0;
         String processIDsInput = "";
+        String arrivalTimeInput = "";
+        String burstTimesInput = "";
+        String prioritiesInput = "";
 
-        // TODO: remove :'(
-        while (noOfProcesses < 3 || noOfProcesses > 10) {
-            System.out.print("\nProcess IDs (enter 3 to 10 processes, e.g. P0 P1 P2 P3 P4 P5) : ");
+        System.out.print("\nRound Robin, quantum = " + QUANTUM + "\n");
+        do {
+            System.out.print("\nProcess IDs (e.g. P0 P1 P2 P3 P4 P5): ");
             processIDsInput = input.nextLine();
             String[] processIDs = processIDsInput.split(" ");
-            noOfProcesses = processIDs.length;
-            if (noOfProcesses < 3 || noOfProcesses > 10) {
-                System.out.println("\nPlease enter between 3 to 10 processes.\n");
-            }
-        }
-        System.out.print("    Arrival Times (e.g. 0 1 2 3 4 5) : ");
-        String arrivalTimeInput = input.nextLine();
-        System.out.print("      Burst Times (e.g. 0 1 2 3 4 5) : ");
-        String burstTimesInput = input.nextLine();
-        System.out.print("      Priorities (e.g. 0 1 2 3 4 5) : ");
-        String prioritiesInput = input.nextLine();
+            processIDCount = processIDs.length;
+            if (processIDsInput.equals(""))
+                System.out.println("\nPlease enter at least 1 process.\n");
+        } while (processIDsInput.equals(""));
+        do {
+            System.out.print("    Arrival Times (e.g. 0 1 2 3 4 5) : ");
+            arrivalTimeInput = input.nextLine();
+            String[] arrivalTime = arrivalTimeInput.split(" ");
+            inputCount = arrivalTime.length;
+            if (inputCount != processIDCount)
+                System.out.println("\nNumber of entrys does not match number of process. Please re-enter\n");
+        } while (inputCount != processIDCount);
+        do {
+            System.out.print("      Burst Times (e.g. 0 1 2 3 4 5) : ");
+            burstTimesInput = input.nextLine();
+            String[] burstTimes = burstTimesInput.split(" ");
+            inputCount = burstTimes.length;
+            if (inputCount != processIDCount)
+                System.out.println("\nNumber of entrys does not match number of process. Please re-enter\n");
+        } while (inputCount != processIDCount);
+        do {
+            System.out.print("      Priorities (e.g. 0 1 2 3 4 5) : ");
+            prioritiesInput = input.nextLine();
+            String[] priorities = prioritiesInput.split(" ");
+            inputCount = priorities.length;
+            if (inputCount != processIDCount)
+                System.out.println("\nNumber of entrys does not match number of process. Please re-enter\n");
+        } while (inputCount != processIDCount);
 
         processes = GeneralFunction.collectInput(processIDsInput, arrivalTimeInput, burstTimesInput, prioritiesInput);
 
